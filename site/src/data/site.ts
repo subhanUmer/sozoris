@@ -1,11 +1,11 @@
 // Single source of truth for shared navigation, services and footer content.
 
 export const SERVICES = [
-  { key: 'vapt',           href: 'service-vapt.html',                    icon: 'vapt',            title: 'Penetration Testing (VAPT)', blurb: 'Identify exploitable vulnerabilities before attackers do.' },
-  { key: 'red-teaming',    href: 'service-red-teaming.html',             icon: 'red-team',        title: 'Red Teaming',                blurb: 'Simulate real adversaries to test resilience.' },
-  { key: 'threat-hunting', href: 'service-threat-hunting.html',          icon: 'threat-hunting',  title: 'Threat Hunting',             blurb: 'Proactively uncover hidden threats.' },
-  { key: 'osint',          href: 'service-osint.html',                   icon: 'osint',           title: 'OSINT & Exposure',           blurb: 'Discover exposed assets and intelligence leaks.' },
-  { key: 'attack-surface', href: 'service-attack-surface-analysis.html', icon: 'attack-surface',  title: 'Attack Surface Analysis',    blurb: 'Understand what attackers see.' },
+  { key: 'vapt',           href: 'service-vapt.html',                    icon: 'vapt',            title: 'Penetration Testing (VAPT)', blurb: 'Find what is exploitable, then prove it closed.' },
+  { key: 'red-teaming',    href: 'service-red-teaming.html',             icon: 'red-team',        title: 'Red Teaming',                blurb: 'Test whether your defences actually hold.' },
+  { key: 'threat-hunting', href: 'service-threat-hunting.html',          icon: 'threat-hunting',  title: 'Threat Hunting',             blurb: 'Find what is already inside, and evict it.' },
+  { key: 'osint',          href: 'service-osint.html',                   icon: 'osint',           title: 'OSINT & Exposure',           blurb: 'Close what you are leaking in the open.' },
+  { key: 'attack-surface', href: 'service-attack-surface-analysis.html', icon: 'attack-surface',  title: 'Attack Surface Analysis',    blurb: 'Know every asset you are responsible for.' },
 ] as const;
 
 // Top-level nav (Services is the mega-menu trigger, rendered separately).
@@ -32,7 +32,7 @@ export const FOOTER_COLS = [
   ]},
   { h: 'Resources', links: [
     { href: 'insights.html', t: 'Insights' },
-    { href: 'trust.html', t: 'Trust & Compliance' },
+    { href: 'trust.html', t: 'Trust & Disclosure' },
     { href: 'contact.html', t: 'Contact' },
     { href: 'contact.html#book', t: 'Book Assessment' },
   ]},
@@ -44,7 +44,19 @@ export const FOOTER_COLS = [
 ] as const;
 
 export const SOCIAL = [
-  { href: 'https://www.linkedin.com/company/subzerosec', label: 'LinkedIn' },
-  { href: 'https://x.com/subzerosec', label: 'X' },
-  { href: 'https://github.com/subzerosec', label: 'GitHub' },
+  { href: 'https://www.linkedin.com/company/sozoris', label: 'LinkedIn' },
+  { href: 'https://x.com/sozoris', label: 'X' },
+  { href: 'https://github.com/sozoris', label: 'GitHub' },
+] as const;
+
+// Verified, externally-checkable research. This is the firm's real proof, so it
+// lives in shared data rather than being retyped per page. Every row must stay
+// independently confirmable — if a claim cannot be linked or checked, it does
+// not belong here.
+export const DISCLOSURES = [
+  { vendor: 'Better Auth', logo: 'assets/logos/better-auth.png', finding: 'OAuth refresh-token replay, plus insecure OIDC crypto defaults', status: 'Critical + High' },
+  { vendor: 'n8n',         logo: 'assets/logos/n8n.svg',         finding: 'OAuth authorization bypass', cve: 'CVE-2026-33720', status: 'CVE assigned' },
+  { vendor: 'SAP',         logo: 'assets/logos/sap.svg',         finding: 'SQL injection in @sap/hdi-deploy', status: 'Vendor-validated · bounty' },
+  { vendor: 'Twilio',      logo: 'assets/logos/twilio.svg',      finding: 'Validated finding via HackerOne (CVSS 6.5)', status: 'Bounty awarded' },
+  { vendor: 'FusionAuth',  logo: 'assets/logos/fusionauth.svg',  finding: 'Ongoing access to the private program', status: 'Trusted researcher' },
 ] as const;

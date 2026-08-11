@@ -1,0 +1,20 @@
+---
+/**
+ * The Sozoris mark.
+ *
+ * A ring left open at the top-left, and a bar that seals the gap.
+ * The ring is your perimeter; the gap is what we found; the accent bar
+ * is that finding proven closed. σῴζω — to make whole.
+ *
+ * Deliberately not a padlock and not a shield (both are listed as
+ * anti-references in PRODUCT.md). Drawn in currentColor so it inherits
+ * the surrounding text colour; the seal always takes the palette accent,
+ * so the mark reskins with [data-palette] like everything else.
+ */
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<svg class={className} viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+  <path d="M16 3.5A12.5 12.5 0 1 1 4.25 11.72" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+  <path d="M4.25 11.72 16 3.5" stroke="var(--accent-d)" stroke-width="2.6" stroke-linecap="round" />
+</svg>

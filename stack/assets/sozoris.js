@@ -1,11 +1,81 @@
-/* SubZeroSec - shared interactions */
+/* Sozoris — shared interactions */
 (function () {
-  // Scroll-shrink / darken navbar
+  // ---------- Palette switcher (review tool) ----------
+  // Three palettes ship so the brand direction can be compared live. The
+  // active one is stamped on <html data-palette> by the inline head script
+  // (see Base.astro) before first paint, so there is no flash of the wrong
+  // colours. Delete this block, the .pswitch markup and the head script
+  // once a palette is chosen.
+  var PALETTES = [
+    { id: 'olive',   name: 'Olive & Pewter' },
+    { id: 'slate',   name: 'Slate & Steel' },
+    { id: 'storm',   name: 'Storm & Ash' }
+  ];
+  var sw = document.querySelector('.pswitch');
+  if (sw) {
+    var current = document.documentElement.getAttribute('data-palette') || 'olive';
+    PALETTES.forEach(function (p) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('data-p', p.id);
+      b.setAttribute('aria-pressed', p.id === current ? 'true' : 'false');
+      b.setAttribute('aria-label', 'Palette: ' + p.name);
+      b.title = p.name;
+      b.addEventListener('click', function () {
+        document.documentElement.setAttribute('data-palette', p.id);
+        try { localStorage.setItem('sozoris-palette', p.id); } catch (e) { /* private mode */ }
+        sw.querySelectorAll('button').forEach(function (o) {
+          o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+        });
+      });
+      sw.appendChild(b);
+    });
+  }
+
+  // ---------- Rotating etymology line ----------
+  // σῴζω → sōzō → the definition → Sozoris, then loops. The brand name holds
+  // longer than the other steps so the loop reads as landing somewhere rather
+  // than just spinning. Pauses while the tab is hidden (no work off-screen) and
+  // degrades to the full static phrase under prefers-reduced-motion.
+  document.querySelectorAll('[data-cycle]').forEach(function (el) {
+    var steps = (el.getAttribute('data-cycle') || '').split('|').filter(Boolean);
+    var t = el.querySelector('.cyc-t');
+    var sr = el.querySelector('.cyc-sr');
+    if (!t || steps.length < 2) return;
+
+    var slow = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (slow) {                              // show the whole phrase, never animate
+      if (sr) t.textContent = sr.textContent;
+      return;
+    }
+
+    var i = 0, timer;
+    var HOLD = 2200, HOLD_NAME = 3400, FADE = 340;
+    function isName(n) { return n === steps.length - 1; }
+    function schedule() { timer = setTimeout(next, isName(i) ? HOLD_NAME : HOLD); }
+    function next() {
+      el.classList.add('is-out');            // fade the current step out
+      setTimeout(function () {
+        i = (i + 1) % steps.length;
+        t.textContent = steps[i];
+        el.classList.toggle('is-name', isName(i));
+        el.classList.remove('is-out');       // fade the new step in
+        schedule();
+      }, FADE);
+    }
+    document.addEventListener('visibilitychange', function () {
+      clearTimeout(timer);
+      if (!document.hidden) schedule();
+    });
+    schedule();
+  });
+
+  // ---------- Scroll-shrink / darken navbar ----------
   var hdr = document.querySelector('header');
   function onScroll() { if (hdr) hdr.classList.toggle('scrolled', window.scrollY > 24); }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  // Mobile menu
+  // ---------- Mobile menu ----------
   var burger = document.querySelector('.burger');
   var mnav = document.querySelector('.mnav');
   var backdrop = document.querySelector('.mbackdrop');
@@ -20,7 +90,7 @@
   if (backdrop) backdrop.addEventListener('click', function () { setMenu(false); });
   if (mnav) mnav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
 
-  // Sliding highlight pill that follows hovered link, resting on the active one
+  // ---------- Sliding highlight pill that follows hovered link ----------
   var navlinks = document.querySelector('.nav-links');
   var pill = document.querySelector('.navpill');
   if (navlinks && pill) {
@@ -43,7 +113,7 @@
     setTimeout(settle, 300);
   }
 
-  // Cursor-following glow on cards
+  // ---------- Cursor-following spotlight on cards ----------
   document.querySelectorAll('.card').forEach(function (c) {
     c.addEventListener('pointermove', function (e) {
       var r = c.getBoundingClientRect();
@@ -52,7 +122,7 @@
     });
   });
 
-  // Animated stat counters
+  // ---------- Animated stat counters ----------
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function runCounters(scope) {
     scope.querySelectorAll('.num').forEach(function (el) {
@@ -64,7 +134,8 @@
       requestAnimationFrame(step);
     });
   }
-  // Home services showcase: scroll-driven white sheets (left) + pinned panel (right)
+
+  // ---------- Home services showcase: scroll-driven sheets + pinned panel ----------
   var hsv = document.querySelector('.hsv');
   if (hsv) {
     var hsheets = Array.prototype.slice.call(hsv.querySelectorAll('.hsv-sheet'));
@@ -91,8 +162,8 @@
     hsvSet(0); hsvScroll();
   }
 
-  // Circular reveal CTA (Pro variant only — gated by the --jaws CSS flag).
-  // The white section is masked by a clip-path circle that blooms from the
+  // ---------- Circular reveal CTA (gated by the --jaws CSS flag) ----------
+  // The paper section is masked by a clip-path circle that blooms from the
   // bottom-centre of the SCREEN (origin pinned to the viewport bottom) and
   // grows to cover the whole viewport as the section scrolls up.
   var jaws = document.querySelector('.ctajaws');

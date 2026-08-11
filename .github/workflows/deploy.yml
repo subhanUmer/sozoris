@@ -1,9 +1,10 @@
 name: Deploy site
 
-# Builds the Astro app in /site (output lands in /stack) and publishes the whole
-# repo root — the mockup gallery, the ~25 sibling design variants, and the freshly
+# Builds the Sozoris Astro app in /site (output lands in /stack) and publishes the
+# whole repo root — the mockup gallery, the sibling design variants, and the freshly
 # built final site at /stack — as one GitHub Pages artifact. Sibling mockups are
-# copied verbatim, so only /stack changes between deploys.
+# copied verbatim, so only /stack changes between deploys. Single build now: the
+# former Pro variant is the base, so there is no more /stack-pro.
 
 on:
   push:
@@ -26,14 +27,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
       - name: Install deps
         run: npm ci
         working-directory: site
-      - name: Build both variants (../stack and ../stack-pro)
-        run: npm run build:all
+      - name: Build site (../stack)
+        run: npm run build
         working-directory: site
       - name: Stage Pages artifact (gallery + siblings + built /stack)
         run: |

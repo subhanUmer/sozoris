@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Standalone favicon version of the Sozoris mark. Colours are baked to the
+       default "Olive & Pewter" palette because a favicon cannot read the
+       page's CSS custom properties. Ground is included so the mark stays
+       legible against both light and dark browser chrome. -->
+  <rect width="32" height="32" rx="7" fill="#0E120C"/>
+  <g fill="none" stroke-width="2.6" stroke-linecap="round">
+    <path d="M16 5.5A10.5 10.5 0 1 1 6.13 12.4" stroke="#ECEFE6"/>
+    <path d="M6.13 12.4 16 5.5" stroke="#7C9E7D"/>
+  </g>
+</svg>

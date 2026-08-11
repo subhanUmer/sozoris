@@ -1,0 +1,17 @@
+---
+/**
+ * Palette switcher — a REVIEW TOOL, not a product feature.
+ *
+ * Three brand directions ship at once so they can be compared on the real
+ * site rather than in swatches. The buttons are injected by sozoris.js;
+ * this component only provides the shell and the label.
+ *
+ * To ship a single palette: delete this component and its <PaletteSwitch />
+ * in Base.astro, delete the inline restore script in Base.astro, delete the
+ * palette-switcher block in sozoris.js, and delete the two non-chosen
+ * :root[data-palette="…"] blocks in sozoris.css.
+ */
+---
+<div class="pswitch" role="group" aria-label="Preview brand palette">
+  <span class="pslabel">Palette</span>
+</div>

@@ -1,0 +1,34 @@
+---
+/**
+ * The rotating etymology line.
+ *
+ * Walks the name back to its root and forward again:
+ *   σῴζω  →  sōzō  →  to save · to preserve · to make whole  →  Sozoris
+ *
+ * The whole point is that the brand *is* the definition, so the loop always
+ * lands on the company name and holds there a beat longer before restarting.
+ *
+ * Accessibility:
+ *  - The animated span is aria-hidden; a visually-hidden sibling carries the
+ *    full phrase as one static sentence for screen readers.
+ *  - With prefers-reduced-motion the JS never starts and the line renders as
+ *    the complete static phrase (no flashing, no partial meaning).
+ *  - Steps are separated by "|" in data-cycle. The first step is also the
+ *    server-rendered content, so the line is never empty before JS runs.
+ */
+interface Props { class?: string }
+const { class: className } = Astro.props;
+
+const STEPS = [
+  'σῴζω',                        // σῴζω
+  'sōzō',                                  // sōzō
+  'to save · to preserve · to make whole',
+  'Sozoris',
+];
+const full = 'σῴζω (sōzō) — to save, to preserve, to make whole. Sozoris.';
+---
+<span class={`cyc${className ? ' ' + className : ''}`} data-cycle={STEPS.join('|')}>
+  <span class="cyc-mark" aria-hidden="true"></span>
+  <span class="cyc-t" aria-hidden="true">{STEPS[0]}</span>
+  <span class="cyc-sr">{full}</span>
+</span>

@@ -1,17 +1,19 @@
 ---
+import Mark from './Mark.astro';
 import { FOOTER_COLS, SOCIAL } from '../data/site.ts';
 ---
 <footer class="closer">
   <div class="wrap">
     <div class="fgrid">
-      <div class="about"><a class="brand" href="index.html"><img src="assets/logo.png" alt="" />SubZero<span class="z">Sec</span></a>
-        <p>Offensive security that finds exploitable weaknesses before adversaries do. Before Zero. Beyond Breach.</p>
+      <div class="about"><a class="brand" href="index.html" aria-label="Sozoris — home"><Mark /><span>Sozo<span class="z">ris</span></span></a>
+        <p>Offensive testing in service of defence. We break what you built, prove exactly how, and stay until it holds.</p>
+        <span class="greek">&#963;&#8180;&#950;&#969; &middot; to make whole</span>
         <div class="fsocial">{SOCIAL.map((s) => (<a href={s.href} aria-label={s.label}>{s.label}</a>))}</div>
       </div>
       {FOOTER_COLS.map((col) => (
         <div class="fcol"><h2>{col.h}</h2>{col.links.map((l) => (<a href={l.href}>{l.t}</a>))}</div>
       ))}
     </div>
-    <div class="fbar"><span>&copy; 2026 SubZeroSec (Pvt) Ltd. - Islamabad, Pakistan</span><span>Before Zero. Beyond Breach.</span></div>
+    <div class="fbar"><span>&copy; 2026 Sozoris (Pvt) Ltd. &middot; Islamabad, Pakistan</span><span class="tag">Break it. Prove it. Make it whole.</span></div>
   </div>
 </footer>

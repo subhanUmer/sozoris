@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import MobileNav from '../components/MobileNav.astro';
 import Footer from '../components/Footer.astro';
+import PaletteSwitch from '../components/PaletteSwitch.astro';
 
 interface Props {
   title: string;
@@ -11,33 +12,46 @@ interface Props {
 const { title, description, active } = Astro.props;
 
 // One-line cache-bust for the shared stylesheet + script (they live in /public,
-// so Astro does not fingerprint them). Bump when szs.css / szs.js change.
-const V = '10';
+// so Astro does not fingerprint them). Bump when sozoris.css / sozoris.js change.
+const V = '6';
 const fonts ='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Sora:wght@600;700;800&display=swap';
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-palette="olive">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{title}</title>
 <meta name="description" content={description} />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sozoris" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content="assets/logo.png" />
+<meta property="og:image" content="assets/mark.svg" />
 <meta name="twitter:card" content="summary" />
-<link rel="icon" href="assets/logo.png" />
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href={fonts} rel="stylesheet" />
-<link rel="stylesheet" href={`assets/szs.css?v=${V}`} />
+<link rel="stylesheet" href={`assets/sozoris.css?v=${V}`} />
+<!-- Restore the reviewer's chosen palette before first paint, so switching
+     never flashes the default colours. Remove alongside the switcher once a
+     palette is locked in. -->
+<script is:inline>
+  (function () {
+    try {
+      var p = localStorage.getItem('sozoris-palette');
+      if (p) document.documentElement.setAttribute('data-palette', p);
+    } catch (e) { /* storage blocked — keep the default palette */ }
+  })();
+</script>
 </head>
 <body>
 <Header active={active} />
 <MobileNav />
 <slot />
 <Footer />
-<script src={`assets/szs.js?v=${V}`}></script>
+<PaletteSwitch />
+<script src={`assets/sozoris.js?v=${V}`}></script>
 </body>
 </html>
